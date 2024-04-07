@@ -1,24 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
+import colorData from "./color-data.json";
+import { useState } from 'react';
+import ColorList from './components/ColorList';
 
 function App() {
+  const [colors, SetColors] = useState(colorData);
+
+  const removeColor = id => {
+    const newColors = colors.filter(color => color.id !== id);
+    SetColors(newColors);
+  };
+
+  const rateColor = (id, rating) => {
+    const newColors = colors.map(color => 
+      color.id === id ? { ...color, rating } : color
+    );
+    SetColors(newColors);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <ColorList 
+        colors={colors}
+        onRemoveColor = {removeColor}
+        onRateColor={rateColor}
+      />
   );
 }
 
